@@ -59,6 +59,7 @@ document.querySelector('#app').innerHTML = `
   <div>
     <img src="${rocketLogo}" class="logo" alt="Discord" />
     <h1>Hello World, fuckers!</h1>
+    <iframe height=200px width=600px src="client/godot/NewWebTest.html"></iframe>
   </div>
 `;
 
