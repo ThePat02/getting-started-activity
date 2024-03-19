@@ -14,7 +14,6 @@ setupDiscordSdk().then(() => {
   // We can now make API calls within the scopes we requested in setupDiscordSDK()
   // Note: the access_token returned is a sensitive secret and should be treated as such
   appendVoiceChannelName();
-  appendGuildAvatar();
 });
 
 async function setupDiscordSdk() {
@@ -57,11 +56,16 @@ async function setupDiscordSdk() {
 
 document.querySelector('#app').innerHTML = `
   <div>
-    <img src="${rocketLogo}" class="logo" alt="Discord" />
-    <h1>Hello World, fuckers!</h1>
-    <iframe height=200px width=600px src="client/godot/NewWebTest.html"></iframe>
+    <img src="${rocketLogo}" class="logo" alt="Discord" /><br>
+    <button id="updateParticipantsButton">Update Participants</button>
+    <p>Participants: <span id="members"></span></p>
+    
   </div>
 `;
+
+document.querySelector('#updateParticipantsButton').addEventListener('click', updateParticipants);
+
+//<iframe height=500px width=1200px src="godot/NewWebTest.html"></iframe>
 
 async function appendVoiceChannelName() {
   const app = document.querySelector('#app');
@@ -114,3 +118,19 @@ async function appendGuildAvatar() {
     app.appendChild(guildImg);
   }
 }
+
+
+async function updateParticipants() {
+  const app = document.querySelector('#app');
+
+  // Write test into span
+  const member_span = document.querySelector('#members');
+  member_span.innerHTML = "Loading...";
+
+  const channel = await discordSdk.commands.getChannel({channel_id: discordSdk.channelId});
+  channel.voice_states.forEach(async (voice_state) => {
+    const user = voice_state.nick;
+    member_span.innerHTML = user;
+  });
+}
+
